@@ -18,7 +18,7 @@ class NetworkGraphConfiguration {
   BendPointShape bendPointShape = SharpBendPointShape();
   CoordinateAssignment coordinateAssignment = CoordinateAssignment.Average;
 
-  bool addTriangleToEdge = true;
+  bool addTriangleToEdge = false;
 
   int getLevelSeparation() {
     return levelSeparation;

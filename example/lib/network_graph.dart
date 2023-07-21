@@ -92,9 +92,5 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     graph.addEdge(node4, node10);
     graph.addEdge(node4, node11);
     graph.addEdge(node11, node12);
-
-    builder
-      ..addTriangleToEdge = false
-      ..orientation = NetworkGraphConfiguration.ORIENTATION_TOP_BOTTOM;
   }
 }
