@@ -1,5 +1,6 @@
 import 'package:example/decision_tree_screen.dart';
 import 'package:example/layer_graphview.dart';
+import 'package:example/network_graph.dart';
 import 'package:example/tree_graphview_json.dart';
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
@@ -31,6 +32,25 @@ class Home extends StatelessWidget {
       child: Scaffold(
         body: Center(
           child: Column(children: [
+            SizedBox(
+              height: 20,
+            ),
+            MaterialButton(
+                color: Colors.amber,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NetworkGraphPage(),
+                  ),
+                ),
+                child: Text(
+                  'Network Graph',
+                  style: TextStyle(fontSize: 30),
+                )
+            ),
             SizedBox(
               height: 20,
             ),
