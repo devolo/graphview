@@ -37,6 +37,16 @@ part 'tree/BuchheimWalkerNodeData.dart';
 
 part 'tree/TreeEdgeRenderer.dart';
 
+part 'networkgraph/NetworkGraphAlgorithm.dart';
+
+part 'networkgraph/NetworkGraphConfiguration.dart';
+
+part 'networkgraph/NetworkGraphEdgeData.dart';
+
+part 'networkgraph/NetworkGraphEdgeRenderer.dart';
+
+part 'networkgraph/NetworkGraphNodeData.dart';
+
 typedef NodeWidgetBuilder = Widget Function(Node node);
 
 class GraphView extends StatefulWidget {
