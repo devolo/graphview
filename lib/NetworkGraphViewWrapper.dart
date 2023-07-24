@@ -89,7 +89,7 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                   viewTransformationController.value.setEntry(0, 3, -xOffset);
 
                   // Set detail level based on zoom factor
-                  widget.detailLevel = zoomFactor == 1.35 ? DetailLevel.High : (zoomFactor < 0.8 ? DetailLevel.Low : DetailLevel.Medium);
+                  widget.detailLevel = getDetailLevelFromZoomFactor(zoomFactor);
 
                   print('Graph dimensions: ${graphWidth}W; ${graphHeight}H; ${graphLongestSide}LS');
                   print('Device dimensions: ${deviceWidth}W; ${deviceHeight}H; ${deviceLongestSide}LS');
@@ -125,9 +125,21 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                 return widget.nodeWidget(a, widget.detailLevel);
               },
             ),
+            onInteractionEnd: (ScaleEndDetails details) {
+              // Details.scale can give values below 0.5 or above 2.0 and resets to 1
+              // Use the Controller Matrix4 to get the correct scale.
+              var zoomFactor = viewTransformationController.value.getMaxScaleOnAxis();
+              setState(() {
+                widget.detailLevel = getDetailLevelFromZoomFactor(zoomFactor);
+              });
+            },
           ),
         ),
       ],
     );
+  }
+
+  DetailLevel getDetailLevelFromZoomFactor(double zoomFactor) {
+    return zoomFactor >= 1.35 ? DetailLevel.High : (zoomFactor < 0.6 ? DetailLevel.Low : DetailLevel.Medium);
   }
 }
