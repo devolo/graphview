@@ -9,13 +9,15 @@ import 'DefaultNodeWidget.dart';
 import 'GraphView.dart';
 
 typedef NodeWidgetBuilder = Widget Function(Node node);
+enum DetailLevel { Low, Medium, High }
 
 class NetworkGraphViewWrapper extends StatefulWidget {
   final Graph graph;
-  final Widget Function(int?) nodeWidget;
+  final Widget Function(int?, DetailLevel) nodeWidget;
+  DetailLevel detailLevel;
 
   NetworkGraphViewWrapper(
-      {Key? key, required this.graph, this.nodeWidget = DefaultNodeWidget})
+      {Key? key, required this.graph, this.nodeWidget = DefaultNodeWidget, this.detailLevel = DetailLevel.Medium})
       : super(key: key);
 
   @override
@@ -54,16 +56,16 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                 builder: (Node node) {
                   // I can decide what widget should be shown here based on the id
                   var a = node.key!.value as int?;
-                  return widget.nodeWidget(a);
+                  return widget.nodeWidget(a, widget.detailLevel);
                 },
               ),
               measureRect: (Rect? r) {
                 setState(() {
                   _boundingBox = r;
 
-                  double? graphWidth = _boundingBox?.width;
-                  double? graphHeight = _boundingBox?.height;
-                  double? graphLongestSide = _boundingBox?.longestSide;
+                  var graphWidth = _boundingBox?.width;
+                  var graphHeight = _boundingBox?.height;
+                  var graphLongestSide = _boundingBox?.longestSide;
 
                   var deviceWidth = MediaQuery.of(context).size.width;
                   var deviceHeight = MediaQuery.of(context).size.height;
@@ -72,8 +74,9 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                   var heightOfViewPadding = MediaQuery.of(context).viewPadding.top;
                   var zoomFactor = 1.0;
                   var xOffset = 0.0;
+                  var zoomBufferPercentage = 98;
 
-                  zoomFactor = deviceWidth / graphWidth!;
+                  zoomFactor = (zoomBufferPercentage / 100) * (deviceWidth / graphWidth!);
                   if (zoomFactor > 1.35) {
                     zoomFactor = 1.35;
                     xOffset = - (deviceWidth - graphWidth * 1.35) / 2;
@@ -85,11 +88,15 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
 
                   viewTransformationController.value.setEntry(0, 3, -xOffset);
 
+                  // Set detail level based on zoom factor
+                  widget.detailLevel = zoomFactor == 1.35 ? DetailLevel.High : (zoomFactor < 0.8 ? DetailLevel.Low : DetailLevel.Medium);
+
                   print('Graph dimensions: ${graphWidth}W; ${graphHeight}H; ${graphLongestSide}LS');
                   print('Device dimensions: ${deviceWidth}W; ${deviceHeight}H; ${deviceLongestSide}LS');
                   print('View padding: $heightOfViewPadding');
                   print('Zoom factor: $zoomFactor');
                   print('xOffset: $xOffset');
+                  print('Detail level: ${widget.detailLevel.toString()}');
                   // print('zoomFactor: $zoomFactor');
                 });
               },
@@ -112,9 +119,10 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                 ..strokeWidth = 2
                 ..style = PaintingStyle.stroke,
               builder: (Node node) {
-                // I can decide what widget should be shown here based on the id
+                /*I can decide what widget should be shown here based on the id
+                as well as the level of detail*/
                 var a = node.key!.value as int?;
-                return widget.nodeWidget(a);
+                return widget.nodeWidget(a, widget.detailLevel);
               },
             ),
           ),
