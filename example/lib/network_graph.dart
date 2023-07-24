@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:graphview/NetworkGraphViewWrapper.dart';
 
 class NetworkGraphPage extends StatefulWidget {
   @override
@@ -9,61 +8,7 @@ class NetworkGraphPage extends StatefulWidget {
 }
 
 class _NetworkGraphPageState extends State<NetworkGraphPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: InteractiveViewer(
-                  constrained: false,
-                  boundaryMargin: EdgeInsets.all(100),
-                  minScale: 0.01,
-                  maxScale: 5.6,
-                  child: GraphView(
-                    graph: graph,
-                    algorithm: NetworkGraphAlgorithm(builder),
-                    paint: Paint()
-                      ..color = Colors.black
-                      ..strokeWidth = 2
-                      ..style = PaintingStyle.stroke,
-                    builder: (Node node) {
-                      // I can decide what widget should be shown here based on the id
-                      var a = node.key!.value as int?;
-                      return rectangleWidget(a);
-                    },
-                  )),
-            ),
-          ],
-        ));
-  }
-
-  Random r = Random();
-
-  Widget rectangleWidget(int? a) {
-    return InkWell(
-      onTap: () {
-        print('clicked');
-      },
-      child: Container(
-          padding: EdgeInsets.all(32.0),
-          decoration: BoxDecoration(
-            color: Colors.amber,
-            shape: BoxShape.circle,
-          ),
-          child: Text(
-            'Node ${a}',
-            style: TextStyle(color: Colors.white),
-          )
-      ),
-    );
-  }
-
   final Graph graph = Graph();
-  NetworkGraphConfiguration builder = NetworkGraphConfiguration()
-    ..bendPointShape = NetworkGraphCurvedBendPointShape(curveLength: 20);
 
   @override
   void initState() {
@@ -92,5 +37,11 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     graph.addEdge(node4, node10);
     graph.addEdge(node4, node11);
     graph.addEdge(node11, node12);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: NetworkGraphViewWrapper(graph: graph,),
+    );
   }
 }
