@@ -26,17 +26,37 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     final node10 = Node.Id(10);
     final node11 = Node.Id(11);
     final node12 = Node.Id(12);
+
+    final node13 = Node.Id(13);
+    final node14 = Node.Id(14);
+    final node15 = Node.Id(15);
+    final node16 = Node.Id(16);
+    final node17 = Node.Id(17);
+    final node18 = Node.Id(18);
+
     graph.addEdge(node1, node2);
     graph.addEdge(node1, node3);
     graph.addEdge(node1, node4);
-    graph.addEdge(node2, node5);
-    graph.addEdge(node2, node6);
+    graph.addEdge(node1, node5);
+    graph.addEdge(node1, node6);
     graph.addEdge(node6, node7);
     graph.addEdge(node6, node8);
     graph.addEdge(node4, node9);
     graph.addEdge(node4, node10);
     graph.addEdge(node4, node11);
     graph.addEdge(node11, node12);
+    graph.addEdge(node1, node12);
+
+    graph.addEdge(node12, node13);
+    graph.addEdge(node12, node14);
+
+    graph.addEdge(node14, node15);
+    graph.addEdge(node14, node16);
+
+    graph.addEdge(node15, node17);
+    graph.addEdge(node15, node18);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
