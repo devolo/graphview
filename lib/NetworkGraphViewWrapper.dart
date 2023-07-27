@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:graphview/utils.dart';
 
-import 'DefaultNodeWidget.dart';
 import 'GraphView.dart';
+import 'networkgraph/NetworkNodeWidget.dart';
 
 typedef NodeWidgetBuilder = Widget Function(Node node);
 enum DetailLevel { Low, Medium, High }
 
 class NetworkGraphViewWrapper extends StatefulWidget {
   final Graph graph;
-  final Widget nodeWidget;
+  final List<NetworkNode> networkNodes;
   DetailLevel detailLevel;
-  Color edgeColor;
 
   NetworkGraphViewWrapper(
-      {Key? key, required this.graph, required this.nodeWidget, this.detailLevel = DetailLevel.Medium, this.edgeColor = Colors.grey})
+      {Key? key, required this.graph, this.detailLevel = DetailLevel.Medium, required this.networkNodes})
       : super(key: key);
 
   @override
@@ -53,13 +52,12 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                   graph: widget.graph,
                   algorithm: NetworkGraphAlgorithm(builder),
                   paint: Paint()
-                    ..color = Colors.grey
+                    ..color = Colors.white
                     ..strokeWidth = 2
                     ..style = PaintingStyle.stroke,
                   builder: (Node node) {
-                    // I can decide what widget should be shown here based on the id
-                    var a = node.key!.value as int?;
-                    return widget.nodeWidget;
+                    var index = widget.graph.nodes.indexOf(node);
+                    return widget.networkNodes.elementAt(index);
                   },
                 ),
                 measureRect: (Rect? r) {
@@ -106,35 +104,36 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
             ),
           ),
           Expanded(
-            child: InteractiveViewer(
-              trackpadScrollCausesScale: true,
-              transformationController: viewTransformationController,
-              constrained: false,
-              boundaryMargin: const EdgeInsets.all(double.infinity),
-              minScale: 0.01,
-              maxScale: 3.0,
-              child: GraphView(
-                graph: widget.graph,
-                algorithm: NetworkGraphAlgorithm(builder),
-                paint: Paint()
-                  ..color = widget.edgeColor
-                  ..strokeWidth = 2
-                  ..style = PaintingStyle.stroke,
-                builder: (Node node) {
-                  /*I can decide what widget should be shown here based on the id
-                  as well as the level of detail*/
-                  var a = node.key!.value as int?;
-                  return widget.nodeWidget;
+            child: Container(
+              color: NetworkGraphConfiguration.backgroundColor,
+              child: InteractiveViewer(
+                trackpadScrollCausesScale: true,
+                transformationController: viewTransformationController,
+                constrained: false,
+                boundaryMargin: const EdgeInsets.all(double.infinity),
+                minScale: 0.01,
+                maxScale: 3.0,
+                child: GraphView(
+                  graph: widget.graph,
+                  algorithm: NetworkGraphAlgorithm(builder),
+                  paint: Paint()
+                    ..color = Colors.white
+                    ..strokeWidth = 2
+                    ..style = PaintingStyle.stroke,
+                  builder: (Node node) {
+                    var index = widget.graph.nodes.indexOf(node);
+                    return widget.networkNodes.elementAt(index);
+                  },
+                ),
+                onInteractionEnd: (ScaleEndDetails details) {
+                  // Details.scale can give values below 0.5 or above 2.0 and resets to 1
+                  // Use the Controller Matrix4 to get the correct scale.
+                  var zoomFactor = viewTransformationController.value.getMaxScaleOnAxis();
+                  setState(() {
+                    widget.detailLevel = getDetailLevelFromZoomFactor(zoomFactor);
+                  });
                 },
-              ),
-              onInteractionEnd: (ScaleEndDetails details) {
-                // Details.scale can give values below 0.5 or above 2.0 and resets to 1
-                // Use the Controller Matrix4 to get the correct scale.
-                var zoomFactor = viewTransformationController.value.getMaxScaleOnAxis();
-                setState(() {
-                  widget.detailLevel = getDetailLevelFromZoomFactor(zoomFactor);
-                });
-              },
+              )
             ),
           ),
         ],

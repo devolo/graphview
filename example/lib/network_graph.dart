@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:graphview/NetworkGraphViewWrapper.dart';
+import 'package:graphview/networkgraph/NetworkNodeWidget.dart';
 
 class NetworkGraphPage extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class NetworkGraphPage extends StatefulWidget {
 
 class _NetworkGraphPageState extends State<NetworkGraphPage> {
   final Graph graph = Graph();
+  List<NetworkNode> networkNodes = [];
 
   @override
   void initState() {
@@ -35,10 +37,10 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     final node18 = Node.Id(18);
 
     graph.addEdge(node1, node2);
-    graph.addEdge(node1, node3);
-    graph.addEdge(node1, node4);
-    graph.addEdge(node1, node5);
-    graph.addEdge(node1, node6);
+    graph.addEdge(node2, node3);
+    graph.addEdge(node2, node4);
+    graph.addEdge(node2, node5);
+    graph.addEdge(node2, node6);
     graph.addEdge(node6, node7);
     graph.addEdge(node6, node8);
     graph.addEdge(node4, node9);
@@ -55,13 +57,30 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
 
     graph.addEdge(node15, node17);
     graph.addEdge(node15, node18);
+
+    graph.nodes.forEach((element) {
+      networkNodes.add(NetworkNode(
+        name: 'Device',
+        icon: 'assets/devolo_adapter_wifi.svg',
+        id: '${graph.nodes.indexOf(element)}',
+        productName: 'Product name',
+        type: 'unused',
+        uplinkSpeedInMbps: 20,
+        downlinkSpeedInMbps: 50,
+        showSpeeds: false,
+        isConnectedToCurrentClient: false,
+        isOffline: false,
+        isEasyMeshController: false,
+        onDeviceTap: (node) {}
+      ));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: NetworkGraphViewWrapper(graph: graph,),
+        body: NetworkGraphViewWrapper(graph: graph, networkNodes: networkNodes,),
     );
   }
 }
