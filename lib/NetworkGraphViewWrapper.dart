@@ -63,7 +63,7 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                   graph: widget.graph,
                   algorithm: NetworkGraphAlgorithm(builder),
                   paint: Paint()
-                    ..color = Colors.white
+                    ..color = NetworkGraphConfiguration.foregroundColor
                     ..strokeWidth = 2
                     ..style = PaintingStyle.stroke,
                   builder: (Node node) {
@@ -125,7 +125,7 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                   graph: widget.graph,
                   algorithm: NetworkGraphAlgorithm(builder),
                   paint: Paint()
-                    ..color = Colors.white
+                    ..color = NetworkGraphConfiguration.foregroundColor
                     ..strokeWidth = 2
                     ..style = PaintingStyle.stroke,
                   builder: (Node node) {

@@ -17,7 +17,7 @@ class NetworkNodeConfiguration {
 
   static Color backgroundColor = Color(0xFF0072B4);
   static Color foregroundColor = Color(0xFFFFFFFF);
-  static Color secondaryBackgroundColor = Colors.white38;
+  static Color offlineForegroundColor = Colors.white38;
 
   static TextStyle bodyTextStyle = TextStyle(
       fontFamily: 'OpenSans',

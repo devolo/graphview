@@ -241,7 +241,7 @@ class _NetworkNodeState extends State<NetworkNode> {
   }
 
   Color _getColorForDeviceState(bool isOffline) {
-    return isOffline ? NetworkNodeConfiguration.secondaryBackgroundColor : NetworkNodeConfiguration.foregroundColor;
+    return isOffline ? NetworkNodeConfiguration.offlineForegroundColor : NetworkNodeConfiguration.foregroundColor;
   }
 
   Widget _getInternetWidget() {

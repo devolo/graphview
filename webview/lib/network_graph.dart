@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:graphview/NetworkGraphViewWrapper.dart';
+import 'package:graphview/networkgraph/NetworkNodeConfiguration.dart';
 import 'package:graphview/networkgraph/NetworkNodeWidget.dart';
 
 class NetworkGraphPage extends StatefulWidget {
@@ -14,73 +18,66 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
 
   @override
   void initState() {
+    readJSON();
     super.initState();
+  }
 
-    final node1 = Node.Id(1);
-    final node2 = Node.Id(2);
-    final node3 = Node.Id(3);
-    final node4 = Node.Id(4);
-    final node5 = Node.Id(5);
-    final node6 = Node.Id(6);
-    final node8 = Node.Id(7);
-    final node7 = Node.Id(8);
-    final node9 = Node.Id(9);
-    final node10 = Node.Id(10);
-    final node11 = Node.Id(11);
-    final node12 = Node.Id(12);
-
-    final node13 = Node.Id(13);
-    final node14 = Node.Id(14);
-    final node15 = Node.Id(15);
-    final node16 = Node.Id(16);
-    final node17 = Node.Id(17);
-    final node18 = Node.Id(18);
-
-    graph.addEdge(node1, node2);
-    graph.addEdge(node2, node3);
-    graph.addEdge(node2, node4);
-    graph.addEdge(node2, node5);
-    graph.addEdge(node2, node6);
-    graph.addEdge(node6, node7);
-    graph.addEdge(node6, node8);
-    graph.addEdge(node4, node9);
-    graph.addEdge(node4, node10);
-    graph.addEdge(node4, node11);
-    graph.addEdge(node11, node12);
-    graph.addEdge(node1, node12);
-
-    graph.addEdge(node12, node13);
-    graph.addEdge(node12, node14);
-
-    graph.addEdge(node14, node15);
-    graph.addEdge(node14, node16);
-
-    graph.addEdge(node15, node17);
-    graph.addEdge(node15, node18);
-
-    graph.nodes.forEach((element) {
+  Future<bool> readJSON() async {
+    final String response = await rootBundle.loadString('sample_network_configurations/sample_network_configuration_1.json');
+    final networkConfig = await json.decode(response);
+    
+    List<Node> nodes = [];
+    // Add nodes
+    networkConfig.forEach((_node) { nodes.add(Node.Id(_node['id'])); });
+    
+    // Add edges
+    networkConfig.forEach((_node) { 
+      _node['connected_to'].forEach((_nodeId) {
+        graph.addEdge(nodes[_node['id']-1], nodes[_nodeId-1]);
+      });
+    });
+    
+    // Add NetworkNode widget
+    networkConfig.forEach((_node) {
       networkNodes.add(NetworkNode(
-        name: 'Device',
-        icon: 'assets/devolo_adapter_wifi.svg',
-        id: '${graph.nodes.indexOf(element)}',
-        productName: 'Product name',
-        type: 'unused',
-        uplinkSpeedInMbps: 20,
-        downlinkSpeedInMbps: 50,
-        showSpeeds: false,
-        isConnectedToCurrentClient: false,
-        isOffline: false,
-        isEasyMeshController: false,
-        onDeviceTap: (node) {}
+          name: _node['user_name'],
+          icon: 'assets/devolo_adapter_wifi.svg',
+          id: _node['id'].toString(),
+          productName: _node['product_name'],
+          type: 'unused',
+          uplinkSpeedInMbps: 20,
+          downlinkSpeedInMbps: 50,
+          showSpeeds: false,
+          isConnectedToCurrentClient: false,
+          isOffline: false,
+          isEasyMeshController: false,
+          onDeviceTap: (node) {}
       ));
     });
+    
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
+    NetworkGraphConfiguration.backgroundColor = Colors.grey.shade200;
+    NetworkGraphConfiguration.foregroundColor = Colors.purple;
+
+    NetworkNodeConfiguration.foregroundColor = NetworkGraphConfiguration.foregroundColor;
+    NetworkNodeConfiguration.backgroundColor = NetworkGraphConfiguration.backgroundColor;
+    NetworkNodeConfiguration.offlineForegroundColor = NetworkGraphConfiguration.foregroundColor.withAlpha(128);
+
     return Scaffold(
-        appBar: AppBar(),
-        body: NetworkGraphViewWrapper(graph: graph, networkNodes: networkNodes,),
+        body: FutureBuilder<bool>(
+          future: readJSON(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return NetworkGraphViewWrapper(graph: graph, networkNodes: networkNodes,);
+            } else {
+              return Center(child: Text('Fetching data ...'),);
+            }
+          },
+        )
     );
   }
 }

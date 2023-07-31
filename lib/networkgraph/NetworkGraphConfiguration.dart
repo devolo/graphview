@@ -34,6 +34,7 @@ class NetworkGraphConfiguration {
   bool addTriangleToEdge = false;
 
   static Color backgroundColor = Color(0xFF0072B4);
+  static Color foregroundColor = Color(0xFFFFFFFF);
 
   int getLevelSeparation() {
     return levelSeparation;

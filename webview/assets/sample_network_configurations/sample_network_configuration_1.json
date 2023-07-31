@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "product_name": "Internet",
+    "user_name": "",
+    "connected_to": [
+      2
+    ]
+  },
+  {
+    "id": 2,
+    "product_name": "Router",
+    "user_name": "Vodafone Router",
+    "connected_to": [
+      3
+    ]
+  },
+  {
+    "id": 3,
+    "product_name": "Magic 2 LAN",
+    "user_name": "Living Room",
+    "connected_to": [
+      4, 5
+    ]
+  },
+  {
+    "id": 4,
+    "product_name": "Magic 2 Wi-Fi 2-1",
+    "user_name": "Office Room",
+    "connected_to": []
+  },
+  {
+    "id": 5,
+    "product_name": "Magic 2 Wi-Fi mini",
+    "user_name": "Bedroom",
+    "connected_to": []
+  }
+]
