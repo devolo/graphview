@@ -1,0 +1,25 @@
+name: webview
+description: Network graph that can be embedded as a webview.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 0.1.0
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  graphview:
+    path: ../
+  provider: ^6.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+     - assets/devolo_adapter_wifi.svg
