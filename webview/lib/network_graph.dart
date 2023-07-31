@@ -45,12 +45,12 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
           id: _node['id'].toString(),
           productName: _node['product_name'],
           type: 'unused',
-          uplinkSpeedInMbps: 20,
-          downlinkSpeedInMbps: 50,
-          showSpeeds: false,
-          isConnectedToCurrentClient: false,
-          isOffline: false,
-          isEasyMeshController: false,
+          uplinkSpeedInMbps: int.parse(_node['upload_speed'] ?? '0'),
+          downlinkSpeedInMbps: int.parse(_node['download_speed'] ?? '0'),
+          showSpeeds: _node['show_speed'] ?? false,
+          isConnectedToCurrentClient: _node['is_connected_to_client'] ?? false,
+          isOffline: !_node['live'] ?? true,
+          isEasyMeshController: _node['is_easymesh_controller'] ?? false,
           onDeviceTap: (node) {}
       ));
     });

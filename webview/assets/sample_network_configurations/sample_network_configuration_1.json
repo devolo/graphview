@@ -5,34 +5,86 @@
     "user_name": "Internet",
     "connected_to": [
       2
-    ]
+    ],
+    "show_speed": false,
+    "is_connected_to_client": false,
+    "live": true,
+    "is_easymesh_controller": false
   },
   {
     "id": 2,
     "product_name": "Router",
     "user_name": "Vodafone Router",
     "connected_to": [
-      3
-    ]
+      3, 4
+    ],
+    "show_speed": false,
+    "is_connected_to_client": false,
+    "live": true,
+    "is_easymesh_controller": false
   },
   {
     "id": 3,
-    "product_name": "Magic 2 LAN",
-    "user_name": "Living Room",
-    "connected_to": [
-      4, 5
-    ]
+    "product_name": "WiFi 6 Repeater 5400",
+    "user_name": "Bedroom Repeater",
+    "connected_to": [],
+    "upload_speed": "10",
+    "download_speed": "60",
+    "show_speed": false,
+    "is_connected_to_client": false,
+    "live": true,
+    "is_easymesh_controller": false
   },
   {
     "id": 4,
-    "product_name": "Magic 2 WiFi 2-1",
-    "user_name": "Office Room",
-    "connected_to": []
+    "product_name": "Magic 2 LAN",
+    "user_name": "Living Room",
+    "connected_to": [
+      5,
+      6,
+      7
+    ],
+    "upload_speed": "100",
+    "download_speed": "500",
+    "show_speed": true,
+    "is_connected_to_client": false,
+    "live": true,
+    "is_easymesh_controller": true
   },
   {
     "id": 5,
+    "product_name": "Magic 2 WiFi 2-1",
+    "user_name": "Office Room",
+    "connected_to": [],
+    "upload_speed": "80",
+    "download_speed": "300",
+    "show_speed": true,
+    "is_connected_to_client": true,
+    "live": true,
+    "is_easymesh_controller": false
+  },
+  {
+    "id": 6,
     "product_name": "Magic 2 WiFi mini",
     "user_name": "Bedroom",
-    "connected_to": []
+    "connected_to": [],
+    "upload_speed": "10",
+    "download_speed": "50",
+    "show_speed": false,
+    "is_connected_to_client": false,
+    "live": false,
+    "is_easymesh_controller": false
+  },
+  {
+    "id": 7,
+    "product_name": "Magic 2 WiFi mini",
+    "user_name": "Kitchen",
+    "connected_to": [],
+    "upload_speed": "10",
+    "download_speed": "25",
+    "show_speed": true,
+    "is_connected_to_client": false,
+    "live": true,
+    "is_easymesh_controller": false
   }
 ]
