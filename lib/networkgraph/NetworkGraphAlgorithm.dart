@@ -864,7 +864,9 @@ class NetworkGraphAlgorithm extends Algorithm {
         node.y = yPos;
       });
 
-      if (i < k - 1) {
+      if (i == 0) {
+        yPos += configuration.levelSeparation * 0.5 + maxHeight;
+      } else if (i < k - 1) {
         yPos += configuration.levelSeparation + maxHeight;
       }
     }
