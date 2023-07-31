@@ -89,7 +89,7 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                     var scaleFactor = min(verticalScaleFactor, horizontalScaleFactor);
 
                     var zoomFactor = scaleFactor > 1.35 ? 1.35 : scaleFactor;
-                    var xOffset = -(deviceWidth - graphWidth*zoomFactor) / 2;
+                    var xOffset = -(deviceWidth - zoomPaddingOffset - graphWidth*zoomFactor) / 2;
 
                     viewTransformationController.value.setEntry(0, 0, zoomFactor);
                     viewTransformationController.value.setEntry(1, 1, zoomFactor);

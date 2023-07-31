@@ -23,7 +23,7 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
   }
 
   Future<bool> readJSON() async {
-    final String response = await rootBundle.loadString('sample_network_configurations/sample_network_configuration_1.json');
+    final String response = await rootBundle.loadString('assets/sample_network_configurations/sample_network_configuration_1.json');
     final networkConfig = await json.decode(response);
     
     List<Node> nodes = [];
@@ -41,7 +41,7 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     networkConfig.forEach((_node) {
       networkNodes.add(NetworkNode(
           name: _node['user_name'],
-          icon: 'network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
+          icon: 'assets/network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
           id: _node['id'].toString(),
           productName: _node['product_name'],
           type: 'unused',
@@ -62,6 +62,7 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
   Widget build(BuildContext context) {
     NetworkGraphConfiguration.backgroundColor = Colors.grey.shade200;
     NetworkGraphConfiguration.foregroundColor = Colors.purple;
+    NetworkGraphConfiguration.heightOffset = MediaQuery.of(context).size.height * 0.2;
 
     NetworkNodeConfiguration.foregroundColor = NetworkGraphConfiguration.foregroundColor;
     NetworkNodeConfiguration.backgroundColor = NetworkGraphConfiguration.backgroundColor;
