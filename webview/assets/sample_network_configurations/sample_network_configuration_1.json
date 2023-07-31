@@ -2,7 +2,7 @@
   {
     "id": 1,
     "product_name": "Internet",
-    "user_name": "",
+    "user_name": "Internet",
     "connected_to": [
       2
     ]
@@ -25,13 +25,13 @@
   },
   {
     "id": 4,
-    "product_name": "Magic 2 Wi-Fi 2-1",
+    "product_name": "Magic 2 WiFi 2-1",
     "user_name": "Office Room",
     "connected_to": []
   },
   {
     "id": 5,
-    "product_name": "Magic 2 Wi-Fi mini",
+    "product_name": "Magic 2 WiFi mini",
     "user_name": "Bedroom",
     "connected_to": []
   }

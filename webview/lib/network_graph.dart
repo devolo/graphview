@@ -41,7 +41,7 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     networkConfig.forEach((_node) {
       networkNodes.add(NetworkNode(
           name: _node['user_name'],
-          icon: 'assets/devolo_adapter_wifi.svg',
+          icon: 'network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
           id: _node['id'].toString(),
           productName: _node['product_name'],
           type: 'unused',
@@ -79,5 +79,27 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
           },
         )
     );
+  }
+
+  String getSVGAssetFromProductName(String productName) {
+    if (productName.toLowerCase().contains('lan')) {
+      if (productName.toLowerCase().contains('mini')) {
+        return 'devolo_adapter_lan_mini';
+      } else {
+        return 'devolo_adapter_lan';
+      }
+    } else if (productName.toLowerCase().contains('repeater')) {
+      return 'devolo_adapter_repeater';
+    } else if (productName.toLowerCase().contains('wifi')) {
+      if (productName.toLowerCase().contains('mini')) {
+        return 'devolo_adapter_wifi_mini';
+      } else {
+        return 'devolo_adapter_wifi';
+      }
+    } else if (productName.toLowerCase().contains('router')) {
+      return 'Router';
+    }
+
+    return 'devolo_generic_lan';
   }
 }

@@ -22,5 +22,5 @@ flutter:
   uses-material-design: true
 
   assets:
-     - assets/devolo_adapter_wifi.svg
+     - assets/network_overview/
      - assets/sample_network_configurations/
