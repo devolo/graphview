@@ -9,6 +9,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 library graphview;
 
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -75,22 +77,19 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
 
                     var graphWidth = _boundingBox?.width;
                     var graphHeight = _boundingBox?.height;
-                    var graphLongestSide = _boundingBox?.longestSide;
 
                     var deviceWidth = MediaQuery.of(context).size.width;
                     var deviceHeight = MediaQuery.of(context).size.height;
-                    var deviceLongestSide = MediaQuery.of(context).size.longestSide;
 
-                    var heightOfViewPadding = MediaQuery.of(context).viewPadding.top;
-                    var zoomFactor = 1.0;
-                    var xOffset = 0.0;
-                    var zoomBufferPercentage = 98;
+                    var heightOfViewPadding = NetworkGraphConfiguration.heightOffset;
+                    var zoomPaddingOffset = NetworkGraphConfiguration.widthOffset;
 
-                    zoomFactor = (zoomBufferPercentage / 100) * (deviceWidth / graphWidth!);
-                    if (zoomFactor > 1.35) {
-                      zoomFactor = 1.35;
-                      xOffset = -(deviceWidth - graphWidth * 1.35) / 2;
-                    }
+                    var verticalScaleFactor = (deviceHeight - heightOfViewPadding) / graphHeight!;
+                    var horizontalScaleFactor = (deviceWidth - zoomPaddingOffset) / graphWidth!;
+                    var scaleFactor = min(verticalScaleFactor, horizontalScaleFactor);
+
+                    var zoomFactor = scaleFactor > 1.35 ? 1.35 : scaleFactor;
+                    var xOffset = -(deviceWidth - graphWidth*zoomFactor) / 2;
 
                     viewTransformationController.value.setEntry(0, 0, zoomFactor);
                     viewTransformationController.value.setEntry(1, 1, zoomFactor);
@@ -101,8 +100,8 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                     // Set detail level based on zoom factor
                     widget.detailLevel = getDetailLevelFromZoomFactor(zoomFactor);
 
-                    print('Graph dimensions: ${graphWidth}W; ${graphHeight}H; ${graphLongestSide}LS');
-                    print('Device dimensions: ${deviceWidth}W; ${deviceHeight}H; ${deviceLongestSide}LS');
+                    print('Graph dimensions: ${graphWidth}W; ${graphHeight}H');
+                    print('Device dimensions: ${deviceWidth}W; ${deviceHeight}H');
                     print('View padding: $heightOfViewPadding');
                     print('Zoom factor: $zoomFactor');
                     print('xOffset: $xOffset');

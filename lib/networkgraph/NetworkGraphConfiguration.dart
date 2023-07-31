@@ -21,6 +21,9 @@ class NetworkGraphConfiguration {
   static const int X_SEPARATION = 100;
   static const int Y_SEPARATION = 100;
 
+  static const double heightOffset = 72.0;
+  static const double widthOffset = 32.0;
+
   int levelSeparation = Y_SEPARATION;
   int nodeSeparation = X_SEPARATION;
   int orientation = DEFAULT_ORIENTATION;
