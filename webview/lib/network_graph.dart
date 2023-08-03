@@ -60,9 +60,9 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
 
   @override
   Widget build(BuildContext context) {
-    NetworkGraphConfiguration.backgroundColor = Colors.grey.shade200;
-    NetworkGraphConfiguration.foregroundColor = Colors.purple;
-    NetworkGraphConfiguration.heightOffset = MediaQuery.of(context).size.height * 0.2;
+    NetworkGraphConfiguration.backgroundColor = Colors.white;
+    NetworkGraphConfiguration.foregroundColor = Color(0xFF0072B4);
+    NetworkGraphConfiguration.heightOffset = 0;
 
     NetworkNodeConfiguration.foregroundColor = NetworkGraphConfiguration.foregroundColor;
     NetworkNodeConfiguration.backgroundColor = NetworkGraphConfiguration.backgroundColor;
