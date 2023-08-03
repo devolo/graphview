@@ -137,9 +137,9 @@ class _NetworkNodeState extends State<NetworkNode> {
               ),
               if(widget.isConnectedToCurrentClient)
                 Positioned(
-                  top: circleSize - 10,
+                  top: circleSize,
                   left: 0,
-                  right: -circleSize - 25,
+                  right: circleSize,
                   child: Container(
                     width: iconSize * 1.5,
                     height: iconSize * 1.5,
