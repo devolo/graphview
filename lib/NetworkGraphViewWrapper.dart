@@ -126,7 +126,7 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                   algorithm: NetworkGraphAlgorithm(builder),
                   paint: Paint()
                     ..color = NetworkGraphConfiguration.foregroundColor
-                    ..strokeWidth = 2
+                    ..strokeWidth = 3
                     ..style = PaintingStyle.stroke,
                   builder: (Node node) {
                     var index = widget.graph.nodes.indexOf(node);
