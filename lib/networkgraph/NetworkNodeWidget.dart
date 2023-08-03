@@ -126,12 +126,14 @@ class _NetworkNodeState extends State<NetworkNode> {
                       ),
                       Spacer(),
                     ],
-                  ) : SvgPicture.asset(
-                    widget.icon,
-                    color: _getColorForDeviceState(widget.isOffline),
-                    width: iconSize,
-                    height: iconSize,
-                  )
+                  ) : Container(
+                    padding: EdgeInsets.all(4.0),
+                    child:  SvgPicture.asset(
+                      widget.icon,
+                      color: _getColorForDeviceState(widget.isOffline),
+                      fit: BoxFit.contain,
+                    )
+                  ),
               ),
               if(widget.isConnectedToCurrentClient)
                 Positioned(
@@ -180,13 +182,13 @@ class _NetworkNodeState extends State<NetworkNode> {
                           widget.name!,
                           style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(widget.isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor),
                           textAlign: TextAlign.center,
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
                       ) : SizedBox.shrink(),
                       Text(
                         widget.productName,
-                        style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(widget.isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor),
+                        style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(widget.isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor,),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
