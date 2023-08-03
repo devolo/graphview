@@ -24,3 +24,27 @@ flutter:
   assets:
      - assets/network_overview/
      - assets/sample_network_configurations/
+     - assets/fonts/
+
+  fonts:
+    - family: DevoloFont
+      fonts:
+        - asset: assets/fonts/DevoloFont.ttf # icons for barcode, checkbox, lan and wi-fi devices
+        - asset: assets/fonts/devolo_iconfont_400_regular.ttf
+          weight: 400
+        - asset: assets/fonts/devolo_iconfont_600_semibold.ttf
+          weight: 600
+        - asset: assets/fonts/devolo_iconfont_700_bold.ttf
+          weight: 700
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/opensans_light.ttf
+          weight: 300
+        - asset: assets/fonts/opensans_regular.ttf
+          weight: 400
+        - asset: assets/fonts/opensans_semibold.ttf
+          weight: 600
+        - asset: assets/fonts/opensans_bold.ttf
+          weight: 700
+        - asset: assets/fonts/opensans_italic.ttf
+          style: italic
