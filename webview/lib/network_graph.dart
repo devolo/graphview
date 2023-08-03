@@ -40,18 +40,18 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     // Add NetworkNode widget
     networkConfig.forEach((_node) {
       networkNodes.add(NetworkNode(
-          name: _node['user_name'],
-          icon: 'assets/network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
-          id: _node['id'].toString(),
-          productName: _node['product_name'],
-          type: 'unused',
-          uplinkSpeedInMbps: int.parse(_node['upload_speed'] ?? '0'),
-          downlinkSpeedInMbps: int.parse(_node['download_speed'] ?? '0'),
-          showSpeeds: _node['show_speed'] ?? false,
-          isConnectedToCurrentClient: _node['is_connected_to_client'] ?? false,
-          isOffline: !_node['live'] ?? true,
-          isEasyMeshController: _node['is_easymesh_controller'] ?? false,
-          onDeviceTap: (node) {}
+        name: _node['user_name'],
+        icon: 'assets/network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
+        id: _node['id'].toString(),
+        productName: _node['product_name'],
+        type: 'unused',
+        uplinkSpeedInMbps: int.parse(_node['upload_speed'] ?? '0'),
+        downlinkSpeedInMbps: int.parse(_node['download_speed'] ?? '0'),
+        showSpeeds: _node['show_speed'] ?? false,
+        isConnectedToCurrentClient: _node['is_connected_to_client'] ?? false,
+        isOffline: !_node['live'] ?? true,
+        isEasyMeshController: _node['is_easymesh_controller'] ?? false,
+        onDeviceTap: (node) {},
       ));
     });
     
