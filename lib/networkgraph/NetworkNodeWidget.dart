@@ -79,7 +79,7 @@ class _NetworkNodeState extends State<NetworkNode> {
                   decoration: BoxDecoration(
                       color: widget.showSpeeds ? NetworkNodeConfiguration.foregroundColor : NetworkNodeConfiguration.backgroundColor,
                       shape: BoxShape.circle,
-                      border: Border.all(color: _getColorForDeviceState(widget.isOffline), width: 3)
+                      border: Border.all(color: _getColorForDeviceState(widget.isOffline), width: 4)
                   ),
                   child: widget.showSpeeds ?
                   Column(
@@ -146,7 +146,7 @@ class _NetworkNodeState extends State<NetworkNode> {
                     decoration: BoxDecoration(
                         color: widget.showSpeeds ? NetworkNodeConfiguration.backgroundColor : NetworkNodeConfiguration.foregroundColor,
                         shape: BoxShape.circle,
-                        border: Border.all(color: NetworkNodeConfiguration.foregroundColor, width: 3)
+                        border: Border.all(color: NetworkNodeConfiguration.foregroundColor, width: 4)
                     ),
                     child: Center(
                       child: Padding(
