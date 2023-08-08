@@ -37,7 +37,9 @@ class NetworkGraphViewWrapper extends StatefulWidget {
 
 class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
   NetworkGraphConfiguration builder = NetworkGraphConfiguration()
-    ..bendPointShape = MaxCurvedBendPointShape();
+    ..bendPointShape = MaxCurvedBendPointShape()
+    ..levelSeparation = 0
+    ..nodeSeparation = 0;
 
   final viewTransformationController = TransformationController();
 
