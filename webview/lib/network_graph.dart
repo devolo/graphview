@@ -33,20 +33,20 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     // Add edges
     networkConfig.forEach((_node) { 
       _node['connected_to'].forEach((_nodeId) {
-        graph.addEdge(nodes[_node['id']-1], nodes[_nodeId-1]);
+        graph.addEdge(nodes[int.parse(_node['id'].toString())-1], nodes[int.parse(_nodeId.toString())-1]);
       });
     });
     
     // Add NetworkNode widget
     networkConfig.forEach((_node) {
       networkNodes.add(NetworkNodeObj(
-        name: _node['user_name'],
-        icon: 'assets/network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
+        name: _node['user_name'].toString(),
+        icon: 'assets/network_overview/${getSVGAssetFromProductName(_node['product_name'].toString())}.svg',
         id: _node['id'].toString(),
-        productName: _node['product_name'],
+        productName: _node['product_name'].toString(),
         type: 'unused',
-        uplinkSpeedInMbps: int.parse(_node['upload_speed'] ?? '0'),
-        downlinkSpeedInMbps: int.parse(_node['download_speed'] ?? '0'),
+        uplinkSpeedInMbps: int.tryParse(_node['upload_speed'].toString()) ?? 0,
+        downlinkSpeedInMbps: int.tryParse(_node['download_speed'].toString()) ?? 0,
         showSpeeds: _node['show_speed'] ?? false,
         isConnectedToCurrentClient: _node['is_connected_to_client'] ?? false,
         isOffline: !_node['live'] ?? true,
