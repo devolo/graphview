@@ -24,7 +24,7 @@ enum DetailLevel { Low, Medium, High }
 
 class NetworkGraphViewWrapper extends StatefulWidget {
   final Graph graph;
-  final List<NetworkNode> networkNodes;
+  final List<NetworkNodeObj> networkNodes;
   DetailLevel detailLevel;
 
   NetworkGraphViewWrapper(
@@ -70,7 +70,24 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                     ..style = PaintingStyle.stroke,
                   builder: (Node node) {
                     var index = widget.graph.nodes.indexOf(node);
-                    return widget.networkNodes.elementAt(index);
+                    var networkNodeObj = widget.networkNodes.elementAt(index);
+
+                    return NetworkNode(
+                      context,
+                      networkNodeObj.name ?? '',
+                      networkNodeObj.icon,
+                      networkNodeObj.id,
+                      networkNodeObj.productName,
+                      networkNodeObj.type,
+                      networkNodeObj.uplinkSpeedInMbps,
+                      networkNodeObj.downlinkSpeedInMbps,
+                      networkNodeObj.showSpeeds,
+                      networkNodeObj.isConnectedToCurrentClient,
+                      networkNodeObj.isOffline,
+                      networkNodeObj.isEasyMeshController,
+                      networkNodeObj.onDeviceTap,
+                      widget.detailLevel
+                    );
                   },
                 ),
                 measureRect: (Rect? r) {
@@ -132,7 +149,24 @@ class _NetworkGraphViewWrapperState extends State<NetworkGraphViewWrapper> {
                     ..style = PaintingStyle.stroke,
                   builder: (Node node) {
                     var index = widget.graph.nodes.indexOf(node);
-                    return widget.networkNodes.elementAt(index);
+                    var networkNodeObj = widget.networkNodes.elementAt(index);
+
+                    return NetworkNode(
+                        context,
+                        networkNodeObj.name ?? '',
+                        networkNodeObj.icon,
+                        networkNodeObj.id,
+                        networkNodeObj.productName,
+                        networkNodeObj.type,
+                        networkNodeObj.uplinkSpeedInMbps,
+                        networkNodeObj.downlinkSpeedInMbps,
+                        networkNodeObj.showSpeeds,
+                        networkNodeObj.isConnectedToCurrentClient,
+                        networkNodeObj.isOffline,
+                        networkNodeObj.isEasyMeshController,
+                        networkNodeObj.onDeviceTap,
+                        widget.detailLevel
+                    );
                   },
                 ),
                 onInteractionEnd: (ScaleEndDetails details) {

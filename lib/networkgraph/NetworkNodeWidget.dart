@@ -11,9 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../NetworkGraphViewWrapper.dart';
 import 'NetworkNodeConfiguration.dart';
 
-class NetworkNode extends StatefulWidget {
+class NetworkNodeObj {
   final String? name;
   final String icon;
   final String id;
@@ -27,8 +28,7 @@ class NetworkNode extends StatefulWidget {
   final bool isEasyMeshController;
   final void Function(String deviceId) onDeviceTap;
 
-  NetworkNode({
-    required this.name,
+  NetworkNodeObj({required this.name,
     required this.icon,
     required this.id,
     required this.productName,
@@ -40,34 +40,29 @@ class NetworkNode extends StatefulWidget {
     required this.isOffline,
     required this.isEasyMeshController,
     required this.onDeviceTap,
-    Key? key
-  }) : super(key: key);
-
-  @override
-  State<NetworkNode> createState() => _NetworkNodeState();
+  });
 }
 
-class _NetworkNodeState extends State<NetworkNode> {
-  final double maxTextWidth = 84.0;
-  final double circleSize = 96.0;
-  final double iconSize = 24.0;
-  final double internetIconSize = 48.0;
-  final double speedIconSize = 12.0;
+Widget NetworkNode(BuildContext context, String name, String icon, String id, String productName,
+                  String type, int uplinkSpeedInMbps, int downlinkSpeedInMbps,
+                  bool showSpeeds, bool isConnectedToCurrentClient, bool isOffline, bool isEasyMeshController,
+                  void Function(String deviceId) onDeviceTap, DetailLevel detailLevel) {
 
-  final double textPadding = 8.0;
+  final maxTextWidth = NetworkNodeConfiguration.maxTextWidth;
+  final circleSize = NetworkNodeConfiguration.circleSize;
+  final iconSize = NetworkNodeConfiguration.iconSize;
+  final internetIconSize = NetworkNodeConfiguration.internetIconSize;
+  final speedIconSize = NetworkNodeConfiguration.speedIconSize;
+  final textPadding = NetworkNodeConfiguration.textPadding;
+  final shouldShowClients = NetworkNodeConfiguration.shouldShowClients;
+  final showEasyMeshInformation = NetworkNodeConfiguration.showEasyMeshInformation;
+  var easyMeshControllerCircleOffset = showSpeeds ? 6 : 8;
 
-  final bool shouldShowClients = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final _showEasyMeshInformation = NetworkNodeConfiguration.showEasyMeshInformation;
-    var easyMeshControllerCircleOffset = widget.showSpeeds ? 6 : 8;
-
-    return widget.name!.isNotEmpty && widget.name == 'Internet' ?
-    _getInternetWidget() : Column(
+  return name.isNotEmpty && name == 'Internet' ?
+    _getInternetWidget(circleSize, internetIconSize, textPadding, isOffline) : Column(
       children: [
         GestureDetector(
-          onTap: () => widget.onDeviceTap(widget.id),
+          onTap: () => onDeviceTap(id),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -77,11 +72,11 @@ class _NetworkNodeState extends State<NetworkNode> {
                   padding: EdgeInsets.all(textPadding),
                   margin: EdgeInsets.symmetric(horizontal: 48.0),
                   decoration: BoxDecoration(
-                      color: widget.showSpeeds ? NetworkNodeConfiguration.foregroundColor : NetworkNodeConfiguration.backgroundColor,
+                      color: showSpeeds ? NetworkNodeConfiguration.foregroundColor : NetworkNodeConfiguration.backgroundColor,
                       shape: BoxShape.circle,
-                      border: Border.all(color: _getColorForDeviceState(widget.isOffline), width: 4)
+                      border: Border.all(color: _getColorForDeviceState(isOffline), width: 4)
                   ),
-                  child: widget.showSpeeds ?
+                  child: showSpeeds ?
                   Column(
                     children: [
                       Spacer(),
@@ -92,7 +87,7 @@ class _NetworkNodeState extends State<NetworkNode> {
                             Icon(Icons.download, size: 12.0, color: NetworkNodeConfiguration.backgroundColor),
                             Expanded(
                               child: Text(
-                                '${widget.downlinkSpeedInMbps} Mbps',
+                                '${downlinkSpeedInMbps} Mbps',
                                 textScaleFactor: 1.0,
                                 style: NetworkNodeConfiguration.bodySmallTextStyle,
                                 maxLines: 1,
@@ -114,7 +109,7 @@ class _NetworkNodeState extends State<NetworkNode> {
                             Icon(Icons.upload, size: 12.0, color: NetworkNodeConfiguration.backgroundColor),
                             Expanded(
                               child: Text(
-                                '${widget.uplinkSpeedInMbps} Mbps',
+                                '${uplinkSpeedInMbps} Mbps',
                                 textScaleFactor: 1.0,
                                 style: NetworkNodeConfiguration.bodySmallTextStyle,
                                 maxLines: 1,
@@ -129,13 +124,13 @@ class _NetworkNodeState extends State<NetworkNode> {
                   ) : Container(
                     padding: EdgeInsets.all(4.0),
                     child:  SvgPicture.asset(
-                      widget.icon,
-                      color: _getColorForDeviceState(widget.isOffline),
+                      icon,
+                      color: _getColorForDeviceState(isOffline),
                       fit: BoxFit.contain,
                     )
                   ),
               ),
-              if(widget.isConnectedToCurrentClient)
+              if(isConnectedToCurrentClient)
                 Positioned(
                   top: circleSize,
                   left: 0,
@@ -144,19 +139,19 @@ class _NetworkNodeState extends State<NetworkNode> {
                     width: iconSize * 1.5,
                     height: iconSize * 1.5,
                     decoration: BoxDecoration(
-                        color: widget.showSpeeds ? NetworkNodeConfiguration.backgroundColor : NetworkNodeConfiguration.foregroundColor,
+                        color: showSpeeds ? NetworkNodeConfiguration.backgroundColor : NetworkNodeConfiguration.foregroundColor,
                         shape: BoxShape.circle,
                         border: Border.all(color: NetworkNodeConfiguration.foregroundColor, width: 4)
                     ),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 1),
-                        child: Icon(Icons.phone_iphone, size: speedIconSize * 1.5, color: widget.showSpeeds ? NetworkNodeConfiguration.foregroundColor : NetworkNodeConfiguration.backgroundColor),
+                        child: Icon(Icons.phone_iphone, size: speedIconSize * 1.5, color: showSpeeds ? NetworkNodeConfiguration.foregroundColor : NetworkNodeConfiguration.backgroundColor),
                       ),
                     ),
                   ),
                 ),
-              if (widget.isEasyMeshController)
+              if (isEasyMeshController)
                 Positioned(
                   top: circleSize + easyMeshControllerCircleOffset / 2,
                   right: (circleSize + easyMeshControllerCircleOffset) / 2,
@@ -166,38 +161,38 @@ class _NetworkNodeState extends State<NetworkNode> {
                     decoration: BoxDecoration(
                         color: Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(color: widget.showSpeeds ? NetworkNodeConfiguration.backgroundColor : (_getColorForDeviceState(widget.isOffline)), width: 3)
+                        border: Border.all(color: showSpeeds ? NetworkNodeConfiguration.backgroundColor : (_getColorForDeviceState(isOffline)), width: 3)
                     ),
                   ),
                 ),
               Positioned(
-                top: circleSize*2,
-                left: 0,
-                right: 0,
-                child: Container(
-                  color: Colors.transparent,
-                  child: Column(
-                    children: [
-                      widget.name!.isNotEmpty ? Text(
-                          widget.name!,
-                          style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(widget.isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor),
+                  top: circleSize*2,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      children: [
+                        name.isNotEmpty ? Text(
+                            name,
+                            style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
+                        ) : SizedBox.shrink(),
+                        Text(
+                          productName,
+                          style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor,),
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
-                      ) : SizedBox.shrink(),
-                      Text(
-                        widget.productName,
-                        style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(widget.isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor,),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               if (shouldShowClients)...[
                 Positioned(
                   left: circleSize*2 - 5 - 2.5,
@@ -244,35 +239,23 @@ class _NetworkNodeState extends State<NetworkNode> {
         ),
       ],
     );
-  }
-
-  Color _getColorForDeviceState(bool isOffline) {
-    return isOffline ? NetworkNodeConfiguration.offlineForegroundColor : NetworkNodeConfiguration.foregroundColor;
-  }
-
-  Widget _getInternetWidget() {
-    return Container(
-      width: circleSize,
-      height: internetIconSize,
-      padding: EdgeInsets.all(textPadding * 0.25),
-      margin: EdgeInsets.symmetric(horizontal: 48.0),
-      decoration: BoxDecoration(
-          color: NetworkNodeConfiguration.backgroundColor,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.transparent, width: 0)
-      ),
-      child: Center(child: Icon(Icons.language_rounded, size: internetIconSize, color: _getColorForDeviceState(widget.isOffline),)),
-    );
-  }
 }
 
-Widget ClientNode() {
+Color _getColorForDeviceState(bool isOffline) {
+  return isOffline ? NetworkNodeConfiguration.offlineForegroundColor : NetworkNodeConfiguration.foregroundColor;
+}
+
+Widget _getInternetWidget(double circleSize, double internetIconSize, double textPadding, bool isOffline) {
   return Container(
-    width: 10,
-    height: 10,
+    width: circleSize,
+    height: internetIconSize,
+    padding: EdgeInsets.all(textPadding * 0.25),
+    margin: EdgeInsets.symmetric(horizontal: 48.0),
     decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: Colors.black,
+        color: NetworkNodeConfiguration.backgroundColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.transparent, width: 0)
     ),
+    child: Center(child: Icon(Icons.language_rounded, size: internetIconSize, color: _getColorForDeviceState(isOffline),)),
   );
 }

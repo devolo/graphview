@@ -39,4 +39,13 @@ class NetworkNodeConfiguration {
   );
 
   static double maxTextScaleFactor = 1.1;
+
+  static double maxTextWidth = 84.0;
+  static double circleSize = 96.0;
+  static double iconSize = 24.0;
+  static double internetIconSize = 48.0;
+  static double speedIconSize = 12.0;
+  static double textPadding = 8.0;
+
+  static bool shouldShowClients = false;
 }

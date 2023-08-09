@@ -14,7 +14,7 @@ class NetworkGraphPage extends StatefulWidget {
 
 class _NetworkGraphPageState extends State<NetworkGraphPage> {
   final Graph graph = Graph();
-  List<NetworkNode> networkNodes = [];
+  List<NetworkNodeObj> networkNodes = [];
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _NetworkGraphPageState extends State<NetworkGraphPage> {
     
     // Add NetworkNode widget
     networkConfig.forEach((_node) {
-      networkNodes.add(NetworkNode(
+      networkNodes.add(NetworkNodeObj(
         name: _node['user_name'],
         icon: 'assets/network_overview/${getSVGAssetFromProductName(_node['product_name'])}.svg',
         id: _node['id'].toString(),
