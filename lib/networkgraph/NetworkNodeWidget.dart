@@ -169,28 +169,32 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
                   top: circleSize*2,
                   left: 0,
                   right: 0,
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Column(
-                      children: [
-                        name.isNotEmpty ? Text(
-                            name,
-                            style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
-                        ) : SizedBox.shrink(),
-                        Text(
-                          productName,
-                          style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(isOffline), backgroundColor: NetworkNodeConfiguration.backgroundColor,),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      name.isNotEmpty ? Align(
+                        child: Container(
+                        color: NetworkNodeConfiguration.backgroundColor.withAlpha(200),
+                        child: Text(
+                          name,
+                          style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(isOffline),),
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
-                        ),
-                      ],
-                    ),
+                      ))) : SizedBox.shrink(),
+                      Align(
+                      child: Container(
+                      color: NetworkNodeConfiguration.backgroundColor.withAlpha(200),
+                      child: Text(
+                        productName,
+                        style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(isOffline),),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
+                      ))),
+                    ],
                   ),
                 ),
               if (shouldShowClients)...[
