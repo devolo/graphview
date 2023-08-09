@@ -47,7 +47,7 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
                   String type, int uplinkSpeedInMbps, int downlinkSpeedInMbps,
                   bool showSpeeds, bool isConnectedToCurrentClient, bool isOffline, bool isEasyMeshController,
                   void Function(String deviceId) onDeviceTap, DetailLevel detailLevel) {
-
+  showSpeeds = showSpeeds && detailLevel != DetailLevel.Low;
   final maxTextWidth = NetworkNodeConfiguration.maxTextWidth;
   final circleSize = NetworkNodeConfiguration.circleSize;
   final iconSize = NetworkNodeConfiguration.iconSize;
@@ -56,7 +56,7 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
   final textPadding = NetworkNodeConfiguration.textPadding;
   final shouldShowClients = NetworkNodeConfiguration.shouldShowClients;
   final showEasyMeshInformation = NetworkNodeConfiguration.showEasyMeshInformation;
-  var easyMeshControllerCircleOffset = showSpeeds ? 6 : 8;
+  var easyMeshControllerCircleOffset = showSpeeds ? 8 : 16;
 
   return name.isNotEmpty && name == 'Internet' ?
     _getInternetWidget(circleSize, internetIconSize, textPadding, isOffline) : Column(
@@ -84,7 +84,7 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.download, size: 12.0, color: NetworkNodeConfiguration.backgroundColor),
+                            Icon(Icons.download, size: speedIconSize, color: NetworkNodeConfiguration.backgroundColor),
                             Expanded(
                               child: Text(
                                 '${downlinkSpeedInMbps} Mbps',
@@ -106,7 +106,7 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.upload, size: 12.0, color: NetworkNodeConfiguration.backgroundColor),
+                            Icon(Icons.upload, size: speedIconSize, color: NetworkNodeConfiguration.backgroundColor),
                             Expanded(
                               child: Text(
                                 '${uplinkSpeedInMbps} Mbps',
@@ -151,7 +151,7 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
                     ),
                   ),
                 ),
-              if (isEasyMeshController)
+              if (isEasyMeshController && showEasyMeshInformation)
                 Positioned(
                   top: circleSize + easyMeshControllerCircleOffset / 2,
                   right: (circleSize + easyMeshControllerCircleOffset) / 2,
@@ -165,38 +165,39 @@ Widget NetworkNode(BuildContext context, String name, String icon, String id, St
                     ),
                   ),
                 ),
-              Positioned(
-                  top: circleSize*2,
-                  left: 0,
-                  right: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      name.isNotEmpty ? Align(
+              if (detailLevel != DetailLevel.Low)
+                Positioned(
+                    top: circleSize*2,
+                    left: 0,
+                    right: 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        name.isNotEmpty ? Align(
+                          child: Container(
+                          color: NetworkNodeConfiguration.backgroundColor.withAlpha(200),
+                          child: Text(
+                            name,
+                            style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(isOffline),),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
+                        ))) : SizedBox.shrink(),
+                        Align(
                         child: Container(
                         color: NetworkNodeConfiguration.backgroundColor.withAlpha(200),
                         child: Text(
-                          name,
-                          style: NetworkNodeConfiguration.bodyTextStyle.copyWith(color: _getColorForDeviceState(isOffline),),
+                          productName,
+                          style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(isOffline),),
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
-                      ))) : SizedBox.shrink(),
-                      Align(
-                      child: Container(
-                      color: NetworkNodeConfiguration.backgroundColor.withAlpha(200),
-                      child: Text(
-                        productName,
-                        style: NetworkNodeConfiguration.bodySecondaryTextStyle.copyWith(color: _getColorForDeviceState(isOffline),),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        textScaleFactor: MediaQuery.of(context).textScaleFactor > NetworkNodeConfiguration.maxTextScaleFactor ? NetworkNodeConfiguration.maxTextScaleFactor : MediaQuery.of(context).textScaleFactor,
-                      ))),
-                    ],
+                        ))),
+                      ],
+                    ),
                   ),
-                ),
               if (shouldShowClients)...[
                 Positioned(
                   left: circleSize*2 - 5 - 2.5,

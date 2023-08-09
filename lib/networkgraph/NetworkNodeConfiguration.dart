@@ -34,7 +34,7 @@ class NetworkNodeConfiguration {
       height: 1.36
   );
   static TextStyle bodySmallTextStyle = bodySecondaryTextStyle.copyWith(
-      fontSize: 14,
+      fontSize: 12,
       color: backgroundColor
   );
 
