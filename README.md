@@ -180,12 +180,13 @@ The JSON file has the following structure:
 
 The JSON format and arguments are rather straightforward. Provide an array of `Node` objects with the arguments above, and specify the edges via `connected_to` array. Each object contains the parameters required to build the graph as well as render the `NetworkNode` widget.
 
+The `webview` project includes a "Upload file" button that can be used to upload the JSON file. The contents of recently uploaded JSON file is cached across sessions.
+
 
 Future Work
 ===========
 ☐ Using a `LayoutBuilder`, rebuild the network graph when there is a change in layout (e.g., screen resizes)  
-☐ Support drag & drop of JSON files to change the network graph  
-☐ Provide a file browser for uploading the JSON files  
+☐ Support drag & drop of JSON files to change the network graph
 ☐ Set the distance between each graph level and spacing between sibling nodes dynamically based on the available screen dimensions  
 ☐ Visualize network configuration over time using animations and optional playback controls
 
