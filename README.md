@@ -33,6 +33,8 @@ The core implementation of NetworkGraph is under `/lib/networkgraph` folder. For
     isEasyMeshController: false, // Whether the device is the EasyMesh controller
     onDeviceTap: (node) {} // A callback function that handles taps / clicks on the device
     ```
+    
+    To facilitate setting detail level (see below) based on the zoom level, the `NetworkNode` widget is constructed from a `NetworkNodeObj` class (which has the same parameters). 
 
 ## `NetworkGraphViewWrapper`
 - Returns a network graph that can be zoomed in using pinch gestures and panned using one-finger pan. This interaction is made possible using [`IntearctiveViewer`](https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html) widget.
@@ -60,12 +62,19 @@ This class contains the following parameters used to customize how each node in 
 - `foregroundColor`, `backgroundColor`, and `offlineForegroundColor`: Used to specify the node-drawing colors.
 - `bodyTextStyle`, `bodySecondaryTextStyle`, and `bodySmallTextStyle`: Used to specify `TextStyle` for text used to display nodes.
 - `maxTextScaleFactor`: The `TextScaleFactor` cap at which the text should stop resizing, defaults to `1.1`.
+- Other dimensional attributes, such as `maxTextWidth`, `circleSize`, `internetIconSize`, and `speedIconSize`.
 
 Example
 =======
 For a sample usage of `NetworkGraphViewWrapper`, see `/example/lib/network_graph.dart`.
 
-Specifying Network Configuration Using JSON
+Using progressive disclosure to show/hide details
+=================================================
+`NetworkNode` widget includes a parameter `detailLevel` of enum `DetailLevel`, which is one of the following: `Low`, `Medium`, or `High`. This parameter is updated when the user zoom in or out of the graph, and can be used to change the presentation of the graph. For example, all text (i.e., product type and device name) are shown only when the detail level is `DetailLevel.Medium` or `DetailLevel.High`.
+
+`NetworkGraphViewWrapper` class contains a `getDetailLevelFromZoomFactor()` function that can be used to change the ranges that define each `DetailLevel`. 
+
+Specifying network configuration using JSON
 ===========================================
 It is possible to provide a network configuration as a JSON file input. A working example is available in `/webview/lib/network_graph.dart`. 
 
@@ -183,7 +192,7 @@ The JSON format and arguments are rather straightforward. Provide an array of `N
 The `webview` project includes a "Upload file" button that can be used to upload the JSON file. The contents of recently uploaded JSON file is cached across sessions.
 
 
-Future Work
+Future work
 ===========
 ☐ Using a `LayoutBuilder`, rebuild the network graph when there is a change in layout (e.g., screen resizes)  
 ☐ Support drag & drop of JSON files to change the network graph
